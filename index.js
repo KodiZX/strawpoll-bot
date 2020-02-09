@@ -1,6 +1,11 @@
 var request = require('request'); // 
 var cheerio = require('cheerio'); //
-var plist   = require('./socks.json'); // HTTP proxies LIST
+var readlineSync = require('readline-sync');
+var plist = []
+request('https://api.proxyscrape.com/?request=getproxies&proxytype=http&timeout=10000&country=all&ssl=all&anonymity=all', function (error, response, body) {
+  if (error) {console.log('error getting proxies.')}
+  plist = body.toString().split('\n');
+});
 
 var r = request.defaults()
 var x = 0; // number of proxies that didn't work for some reason;
@@ -12,9 +17,9 @@ var y = 0; // number of proxies that have worked;
 
 /* edit below */
 
-var vote_url = 'https://www.strawpoll.me/19271268' // edit last numbers
-var op = 0; // choose an option; 0 = first one, 1 = second, 2 = third and so on
-var ratio = 200; // ratio of votes; 200 = 5 per second; 1000/ratio = y per second;
+var vote_url = readlineSync.question("What is the strawpoll url?: "); // edit last numbers
+var op = readlineSync.question('Which option do you want to bot?: '); // choose an option; 0 = first one, 1 = second, 2 = third and so on
+var ratio = 100; // ratio of votes; 200 = 5 per second; 1000/ratio = y per second;
 
 /* warning: do not make changes anywhere else if you do not know what you're doing*/
 
